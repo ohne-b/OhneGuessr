@@ -23,7 +23,7 @@
     "@types/google.maps": "3.66.2",
     "svelte-check": "4.7.6",
     "typescript": "6.0.3",
-    "vite": "8.2.2",
+    "vite": "8.3.0",
     "vitest": "^5.0.0"
   }
 }
