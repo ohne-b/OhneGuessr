@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/0hneB/OhneGuessr/internal/mapfile"
+	"github.com/ohne-b/OhneGuessr/internal/mapfile"
 )
 
 func TestChallengeFileBoundary(t *testing.T) {

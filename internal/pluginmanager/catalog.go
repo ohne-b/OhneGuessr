@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"sort"
 
-	"github.com/0hneB/OhneGuessr/internal/httpjson"
+	"github.com/ohne-b/OhneGuessr/internal/httpjson"
 )
 
 const (
-	repositoryURL    = "https://raw.githubusercontent.com/0hneB/OhneGuessr/main/plugins"
+	repositoryURL    = "https://raw.githubusercontent.com/ohne-b/OhneGuessr/main/plugins"
 	maxPluginCatalog = 256 << 10
 )
 

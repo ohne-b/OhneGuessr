@@ -10,7 +10,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/0hneB/OhneGuessr/internal/mapfile"
+	"github.com/ohne-b/OhneGuessr/internal/mapfile"
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 

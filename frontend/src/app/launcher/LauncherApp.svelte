@@ -85,7 +85,7 @@
     <div class="launcher-sidebar-footer">
       <a
         class="launcher-repo-link"
-        href="https://github.com/0hneB/OhneGuessr"
+        href="https://github.com/ohne-b/OhneGuessr"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Open OhneGuessr on GitHub"

@@ -1,4 +1,4 @@
-module github.com/0hneB/OhneGuessr
+module github.com/ohne-b/OhneGuessr
 
 go 1.26.0
 

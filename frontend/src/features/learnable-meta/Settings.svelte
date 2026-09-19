@@ -178,7 +178,7 @@
   </div>
   <InfoLink
     class="sync-info-link"
-    href="https://github.com/0hneB/OhneGuessr#learnable-meta-sync"
+    href="https://github.com/ohne-b/OhneGuessr#learnable-meta-sync"
     label="Open the Learnable Meta sync guide on GitHub"
   />
 </div>

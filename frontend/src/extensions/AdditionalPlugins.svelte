@@ -6,7 +6,7 @@
     PluginService,
     type PluginInfo,
     type PluginManifest
-  } from '../../bindings/github.com/0hneB/OhneGuessr/internal/pluginmanager/index.js';
+  } from '../../bindings/github.com/ohne-b/OhneGuessr/internal/pluginmanager/index.js';
   import { desktopRuntimeAvailable } from '../platform/desktop.js';
   import { mergePluginEntries } from './marketplace.js';
 

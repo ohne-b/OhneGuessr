@@ -4,7 +4,7 @@ import (
 	"context"
 	"maps"
 
-	"github.com/0hneB/OhneGuessr/internal/pluginhost"
+	"github.com/ohne-b/OhneGuessr/internal/pluginhost"
 )
 
 // pluginHost is the narrow boundary between plugins and core-owned map storage.

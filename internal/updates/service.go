@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	updateManifestURL = "https://github.com/0hneB/OhneGuessr/releases/latest/download/latest.json"
+	updateManifestURL = "https://github.com/ohne-b/OhneGuessr/releases/latest/download/latest.json"
 	updatePublicKey   = "zHw2caFsAlJGZ02o83rf9d9Rf7yRyiWuz/+vrAYIsdU="
 )
 

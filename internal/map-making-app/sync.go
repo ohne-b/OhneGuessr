@@ -13,8 +13,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/0hneB/OhneGuessr/internal/httpjson"
-	"github.com/0hneB/OhneGuessr/internal/mapfile"
+	"github.com/ohne-b/OhneGuessr/internal/httpjson"
+	"github.com/ohne-b/OhneGuessr/internal/mapfile"
 )
 
 func (s *Backend) start() (map[string]any, error) {

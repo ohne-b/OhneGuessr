@@ -6,7 +6,7 @@ export type {
   PartyHostState,
   PartyPlayerRound,
   PartyRoundReveal
-} from '../../../bindings/github.com/0hneB/OhneGuessr/internal/local-party/models.js';
+} from '../../../bindings/github.com/ohne-b/OhneGuessr/internal/local-party/models.js';
 
 export type PartyPhase = 'lobby' | 'guessing' | 'scoring' | 'result' | 'final' | 'closed';
 

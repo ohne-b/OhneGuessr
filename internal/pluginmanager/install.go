@@ -12,7 +12,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/0hneB/OhneGuessr/internal/mapfile"
+	"github.com/ohne-b/OhneGuessr/internal/mapfile"
 )
 
 const (

@@ -18,7 +18,7 @@ func TestLocalPartyBindingName(t *testing.T) {
 		t.Fatal("LaunchParty is not exported")
 	}
 	got := typeOf.Elem().PkgPath() + "." + typeOf.Elem().Name() + "." + method.Name
-	want := "github.com/0hneB/OhneGuessr/internal/local-party.LocalParty.LaunchParty"
+	want := "github.com/ohne-b/OhneGuessr/internal/local-party.LocalParty.LaunchParty"
 	if got != want {
 		t.Fatalf("Wails binding = %q, want %q", got, want)
 	}

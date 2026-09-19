@@ -12,9 +12,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/0hneB/OhneGuessr/internal/httpjson"
-	learnablemeta "github.com/0hneB/OhneGuessr/internal/learnable-meta"
-	mapmakingapp "github.com/0hneB/OhneGuessr/internal/map-making-app"
+	"github.com/ohne-b/OhneGuessr/internal/httpjson"
+	learnablemeta "github.com/ohne-b/OhneGuessr/internal/learnable-meta"
+	mapmakingapp "github.com/ohne-b/OhneGuessr/internal/map-making-app"
 )
 
 func newTestBackend(t *testing.T) *Backend {

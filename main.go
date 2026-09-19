@@ -4,7 +4,7 @@ import (
 	"embed"
 	"os"
 
-	"github.com/0hneB/OhneGuessr/internal/desktop"
+	"github.com/ohne-b/OhneGuessr/internal/desktop"
 )
 
 //go:embed all:frontend/dist

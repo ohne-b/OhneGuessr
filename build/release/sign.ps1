@@ -42,11 +42,11 @@ $setup = Sign-Artifact "release/$setupName"
 $portable = Sign-Artifact "release/$portableName"
 $macUpdate = Sign-Artifact "release/$macUpdateName"
 $deb = Sign-Artifact "release/$debName"
-$base = "https://github.com/0hneB/OhneGuessr/releases/download/$env:RELEASE_TAG"
+$base = "https://github.com/ohne-b/OhneGuessr/releases/download/$env:RELEASE_TAG"
 $manifest = [ordered]@{
   schemaVersion = 1
   version = $env:RELEASE_VERSION
-  notes = "[Check release notes on GitHub](https://github.com/0hneB/OhneGuessr/releases/tag/$env:RELEASE_TAG)"
+  notes = "[Check release notes on GitHub](https://github.com/ohne-b/OhneGuessr/releases/tag/$env:RELEASE_TAG)"
   # Keep these fields until pre-Wails clients have crossed this release.
   setup = [ordered]@{
     url = "$base/$setupName"

@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/0hneB/OhneGuessr/internal/httpjson"
+	"github.com/ohne-b/OhneGuessr/internal/httpjson"
 )
 
 func (s *Backend) getClue(rawMapID, rawPanoID string) (map[string]any, error) {

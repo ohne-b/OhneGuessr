@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"sync"
 
-	"github.com/0hneB/OhneGuessr/internal/pluginhost"
+	"github.com/ohne-b/OhneGuessr/internal/pluginhost"
 )
 
 type Backend struct {

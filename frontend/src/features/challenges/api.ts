@@ -1,4 +1,4 @@
-import { Service as ChallengeService } from '../../../bindings/github.com/0hneB/OhneGuessr/internal/challenges/index.js';
+import { Service as ChallengeService } from '../../../bindings/github.com/ohne-b/OhneGuessr/internal/challenges/index.js';
 import { desktopRuntimeAvailable, onDesktopEvent } from '../../platform/desktop.js';
 import type { Challenge } from './types.js';
 

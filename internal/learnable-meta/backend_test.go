@@ -11,7 +11,7 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/0hneB/OhneGuessr/internal/plugintest"
+	"github.com/ohne-b/OhneGuessr/internal/plugintest"
 )
 
 func TestLifecycleSyncAndClues(t *testing.T) {

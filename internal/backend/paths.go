@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/0hneB/OhneGuessr/internal/mapfile"
-	"github.com/0hneB/OhneGuessr/internal/pluginhost"
+	"github.com/ohne-b/OhneGuessr/internal/mapfile"
+	"github.com/ohne-b/OhneGuessr/internal/pluginhost"
 )
 
 func stageRemoval(filename string) (string, bool, error) {

@@ -2,7 +2,7 @@ import type {
   PluginInfo,
   PluginManifest,
   PluginSetting
-} from '../../bindings/github.com/0hneB/OhneGuessr/internal/pluginmanager/index.js';
+} from '../../bindings/github.com/ohne-b/OhneGuessr/internal/pluginmanager/index.js';
 
 export interface PluginCardEntry {
   id: string;

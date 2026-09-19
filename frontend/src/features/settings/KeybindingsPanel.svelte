@@ -74,7 +74,7 @@
 />
 <InfoLink
   class="controls-info-link"
-  href="https://github.com/0hneB/OhneGuessr#controls"
+  href="https://github.com/ohne-b/OhneGuessr#controls"
   label="Open the usage guide on GitHub"
 />
 

@@ -1,4 +1,4 @@
-import { LocalParty } from '../../../bindings/github.com/0hneB/OhneGuessr/internal/local-party/index.js';
+import { LocalParty } from '../../../bindings/github.com/ohne-b/OhneGuessr/internal/local-party/index.js';
 import { desktopRuntimeAvailable, onDesktopEvent } from '../../platform/desktop.js';
 import type { LauncherTheme } from '../../styles/theme.js';
 import type { PartyRoundReveal } from './types.js';

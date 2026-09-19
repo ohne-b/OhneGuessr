@@ -11,9 +11,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/0hneB/OhneGuessr/internal/httpjson"
-	"github.com/0hneB/OhneGuessr/internal/mapfile"
-	"github.com/0hneB/OhneGuessr/internal/pluginhost"
+	"github.com/ohne-b/OhneGuessr/internal/httpjson"
+	"github.com/ohne-b/OhneGuessr/internal/mapfile"
+	"github.com/ohne-b/OhneGuessr/internal/pluginhost"
 )
 
 const (

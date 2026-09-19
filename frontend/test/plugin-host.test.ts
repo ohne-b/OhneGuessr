@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import type { PluginManifest } from '../bindings/github.com/0hneB/OhneGuessr/internal/pluginmanager/index.js';
+import type { PluginManifest } from '../bindings/github.com/ohne-b/OhneGuessr/internal/pluginmanager/index.js';
 import {
   createPluginHost,
   pluginHudButtons,

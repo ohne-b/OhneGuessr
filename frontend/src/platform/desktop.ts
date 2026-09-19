@@ -2,8 +2,8 @@ import { Events, System } from '@wailsio/runtime';
 import {
   DesktopService,
   type GameWindowState
-} from '../../bindings/github.com/0hneB/OhneGuessr/internal/desktop/index.js';
-import { UpdateService } from '../../bindings/github.com/0hneB/OhneGuessr/internal/updates/index.js';
+} from '../../bindings/github.com/ohne-b/OhneGuessr/internal/desktop/index.js';
+import { UpdateService } from '../../bindings/github.com/ohne-b/OhneGuessr/internal/updates/index.js';
 
 export type { GameWindowState };
 

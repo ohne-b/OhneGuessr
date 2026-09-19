@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/0hneB/OhneGuessr/internal/backend"
+	"github.com/ohne-b/OhneGuessr/internal/backend"
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"github.com/wailsapp/wails/v3/pkg/events"
 )

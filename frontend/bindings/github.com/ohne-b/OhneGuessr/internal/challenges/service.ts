@@ -6,17 +6,17 @@
 import { Call as $Call, CancellablePromise as $CancellablePromise } from "@wailsio/runtime";
 
 export function GetActiveChallenge(id: string): $CancellablePromise<string> {
-    return $Call.ByID(3158154374, id);
+    return $Call.ByID(302922630, id);
 }
 
 export function LaunchChallenge(id: string, contents: string): $CancellablePromise<void> {
-    return $Call.ByID(2385101643, id, contents);
+    return $Call.ByID(4007215179, id, contents);
 }
 
 export function SaveChallenge(suggestedName: string, contents: string): $CancellablePromise<boolean> {
-    return $Call.ByID(4262334949, suggestedName, contents);
+    return $Call.ByID(674236133, suggestedName, contents);
 }
 
 export function TakePendingChallenge(): $CancellablePromise<string> {
-    return $Call.ByID(3040679262);
+    return $Call.ByID(2442415198);
 }

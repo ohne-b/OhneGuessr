@@ -99,7 +99,7 @@
   </div>
   <InfoLink
     class="sync-info-link"
-    href="https://github.com/0hneB/OhneGuessr#map-making-app-sync"
+    href="https://github.com/ohne-b/OhneGuessr#map-making-app-sync"
     label="Open the Map Making App sync guide on GitHub"
   />
 </div>

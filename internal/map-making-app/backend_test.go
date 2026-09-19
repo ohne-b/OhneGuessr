@@ -13,7 +13,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/0hneB/OhneGuessr/internal/plugintest"
+	"github.com/ohne-b/OhneGuessr/internal/plugintest"
 )
 
 func TestSyncAllowsLibraryEditsDuringNetworkRequests(t *testing.T) {

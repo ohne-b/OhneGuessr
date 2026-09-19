@@ -21,7 +21,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/0hneB/OhneGuessr/internal/httpjson"
+	"github.com/ohne-b/OhneGuessr/internal/httpjson"
 	qrcode "github.com/skip2/go-qrcode"
 )
 

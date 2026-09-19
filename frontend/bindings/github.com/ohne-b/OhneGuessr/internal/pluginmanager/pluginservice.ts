@@ -10,33 +10,33 @@ import { Call as $Call, CancellablePromise as $CancellablePromise } from "@wails
 import * as $models from "./models.js";
 
 export function Catalog(): $CancellablePromise<$models.PluginManifest[] | null> {
-    return $Call.ByID(963638277);
+    return $Call.ByID(1840364293);
 }
 
 export function EnabledModules(): $CancellablePromise<$models.PluginModule[] | null> {
-    return $Call.ByID(4254696988);
+    return $Call.ByID(4036731676);
 }
 
 export function Install(id: string): $CancellablePromise<$models.PluginInfo> {
-    return $Call.ByID(3978639093, id);
+    return $Call.ByID(560397813, id);
 }
 
 export function Installed(): $CancellablePromise<$models.PluginInfo[] | null> {
-    return $Call.ByID(4049877436);
+    return $Call.ByID(1194645692);
 }
 
 export function SetEnabled(id: string, enabled: boolean): $CancellablePromise<$models.PluginInfo> {
-    return $Call.ByID(918422691, id, enabled);
+    return $Call.ByID(1311265187, id, enabled);
 }
 
 export function SetSetting(id: string, key: string, value: string): $CancellablePromise<$models.PluginInfo> {
-    return $Call.ByID(1733099010, id, key, value);
+    return $Call.ByID(2125941506, id, key, value);
 }
 
 export function Setting(id: string, key: string): $CancellablePromise<string> {
-    return $Call.ByID(1326058186, id, key);
+    return $Call.ByID(2202784202, id, key);
 }
 
 export function Uninstall(id: string): $CancellablePromise<void> {
-    return $Call.ByID(2944278280, id);
+    return $Call.ByID(89046536, id);
 }

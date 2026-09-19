@@ -12,7 +12,7 @@
 
 ## Download
 
-Download the latest version from [GitHub Releases](https://github.com/0hneB/OhneGuessr/releases).
+Download the latest version from [GitHub Releases](https://github.com/ohne-b/OhneGuessr/releases).
 
 See the [changelog](CHANGELOG.md) for release history.
 

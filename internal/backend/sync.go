@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/0hneB/OhneGuessr/internal/httpjson"
+	"github.com/ohne-b/OhneGuessr/internal/httpjson"
 )
 
 type syncCoordinator struct {
