@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.2.2](https://github.com/ohne-b/OhneGuessr/releases/tag/v0.2.2) — 2026-09-19
+
+- update repository links, plugin downloads, and in-app updates for the move to ohne-b on GitHub
+- share UI components and keep their styles together, preserving the existing appearance and controls
+- reorganize frontend features, game logic, backend services, and release scripts for easier maintenance
+- update Wails and its frontend runtime to v3.0.0-beta.20 and Vite to v8.3.0
+- add a changelog covering every release
+
 ## [v0.2.1](https://github.com/ohne-b/OhneGuessr/releases/tag/v0.2.1) — 2026-09-11
 
 - keep maps playable and editable during Map Making App sync, preserving library edits made while downloads are running
