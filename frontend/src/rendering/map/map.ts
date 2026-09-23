@@ -34,6 +34,7 @@ const BASE_WHEEL_ZOOM_RATE = 1 / 360;
 const BASE_TRACKPAD_ZOOM_RATE = 1 / 85;
 const REVEAL_EDGE_PADDING = 64;
 const SINGLE_POINT_EPSILON = 1e-7;
+const panEasing = (t: number) => 1 - (1 - t) ** 3;
 const mapViewports = new WeakMap<MapLibreMap, HTMLElement>();
 const worldFillMaps = new WeakSet<MapLibreMap>();
 
@@ -110,6 +111,13 @@ function createMap(
     minZoom: 0,
     maxZoom: definition.maxZoom,
     renderWorldCopies: true,
+    dragPan: {
+      // These units make MapLibre's duration in ms equal to release speed in px/s.
+      linearity: 1,
+      maxSpeed: Infinity,
+      deceleration: 1000,
+      easing: panEasing
+    },
     dragRotate: false,
     pitchWithRotate: false,
     touchPitch: false,
@@ -121,6 +129,23 @@ function createMap(
     cancelPendingTileRequestsWhileZooming: false,
     ...options
   });
+  const easeTo = map.easeTo.bind(map);
+  map.easeTo = (options, eventData) => {
+    // GeoGuessr's Google Maps 3.64 uses cubic easing and sqrt(speed) timing:
+    // 1000 px/s coasts 156.25 px over 312.5 ms. Keep MapLibre's gesture handling.
+    // Reference: https://maps.googleapis.com/maps-api-v3/api/js/64/14a/map.js
+    if (options.easing === panEasing && options.duration && options.offset) {
+      const duration = 1000 * Math.sqrt(options.duration / 1000) / 3.2;
+      const scale = duration / options.duration;
+      const offset = Array.isArray(options.offset)
+        ? options.offset : [options.offset.x, options.offset.y];
+      options = {
+        ...options, duration,
+        offset: [offset[0] * scale, offset[1] * scale]
+      };
+    }
+    return easeTo(options, eventData);
+  };
   mapViewports.set(map, container);
   if (fillWorld) worldFillMaps.add(map);
   applyMapZoomSpeed(map, DEFAULT_MAP_ZOOM_SPEED);
