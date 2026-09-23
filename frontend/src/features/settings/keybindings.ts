@@ -9,6 +9,8 @@ export const KEYBINDINGS: Record<string, string[]> = {
   zoomIn: ['KeyE'],
   zoomOut: ['KeyQ'],
   resetView: ['KeyR'],
+  jumpForward: ['ArrowUp'],
+  jumpBackward: ['ArrowDown'],
   checkpoint: ['KeyC'],
   checkpointPeek: ['KeyV'],
   lookBehind: ['KeyB'],
@@ -41,6 +43,8 @@ export const CONTROL_ROWS: ControlRow[] = [
   { action: 'zoomIn', label: 'Zoom in' },
   { action: 'zoomOut', label: 'Zoom out' },
   { action: 'resetView', label: 'Reset view' },
+  { action: 'jumpForward', label: 'Jump forward ~100 m' },
+  { action: 'jumpBackward', label: 'Jump backward ~100 m' },
   { action: 'checkpoint', label: 'Set / return checkpoint' },
   { action: 'checkpointPeek', label: 'Peek checkpoint' },
   { action: 'lookBehind', label: 'Look behind' },
@@ -146,6 +150,9 @@ export class Keybindings {
 
   onKeyDown(event: KeyboardEvent) {
     if (event.ctrlKey || event.metaKey || event.altKey) return;
+    const target = event.target;
+    if (target instanceof HTMLElement &&
+        (target.isContentEditable || target.closest('input, textarea, select'))) return;
     const action = this.map[event.code];
     if (!action || !this.actions[action]) return;
     if (event.code === 'Space') event.preventDefault();

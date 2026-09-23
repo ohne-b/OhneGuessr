@@ -13,24 +13,71 @@ vi.mock('@/platform/desktop.js', () => ({
 vi.mock('@/rendering/map/map.js', () => ({ openStreetView: vi.fn() }));
 vi.mock('@/features/game/runtime.js', () => ({
   gmap: { guess: null }, setGuessMapSize: vi.fn(),
-  viewer: { endCheckpointPeek: vi.fn(), endLookBehind: vi.fn() }
+  viewer: { jump: vi.fn(), endCheckpointPeek: vi.fn(), endLookBehind: vi.fn() }
 }));
 vi.mock('@/features/game/session.js', () => ({
   finishRound: vi.fn(), nextRound: vi.fn(), onPlaceGuess: vi.fn(),
   rematchModeGame: vi.fn(), startGame: vi.fn(), submitGuess: vi.fn()
 }));
 
-const key = (code: string, repeat = false) => ({ code, repeat, preventDefault: vi.fn() }) as unknown as KeyboardEvent;
+const key = (code: string, repeat = false) => ({
+  code, repeat, preventDefault: vi.fn(), stopPropagation: vi.fn()
+}) as unknown as KeyboardEvent;
+
+class InputTarget {
+  isContentEditable = false;
+  closest = vi.fn(() => this);
+}
 
 beforeEach(() => {
   vi.clearAllMocks();
+  vi.stubGlobal('HTMLElement', InputTarget);
+  keybindings.rebuild();
   state.phase = 'guessing';
   gameMode.current = null;
+  gameMode.busy = false;
   gmap.guess = null;
 });
 afterEach(() => vi.unstubAllGlobals());
 
 describe('game keyboard input', () => {
+  it('jumps with the arrow keys, consumes repeats, and respects round and typing guards', () => {
+    const forward = key('ArrowUp');
+    keybindings.onKeyDown(forward);
+    keybindings.onKeyDown(key('ArrowDown'));
+    keybindings.onKeyDown(key('ArrowUp', true));
+    expect(vi.mocked(viewer.jump).mock.calls).toEqual([[1], [-1]]);
+    expect(forward.preventDefault).toHaveBeenCalledOnce();
+    expect(forward.stopPropagation).toHaveBeenCalledOnce();
+    for (const properties of [
+      { ctrlKey: true }, { altKey: true }, { metaKey: true },
+      { defaultPrevented: true }, { target: new InputTarget() }
+    ]) keybindings.onKeyDown(Object.assign(key('ArrowUp'), properties));
+    gameMode.busy = true;
+    keybindings.onKeyDown(key('ArrowUp'));
+    gameMode.busy = false;
+    gameMode.current = { allowsGuess: false } as typeof gameMode.current;
+    keybindings.onKeyDown(key('ArrowUp'));
+    gameMode.current = null;
+    for (const phase of ['loading', 'result', 'final'] as const) {
+      state.phase = phase;
+      keybindings.onKeyDown(key('ArrowUp'));
+    }
+    expect(viewer.jump).toHaveBeenCalledTimes(2);
+  });
+
+  it('captures rebound jump keys before native walking without moving other shortcuts into capture', () => {
+    const addEventListener = vi.fn();
+    vi.stubGlobal('window', { addEventListener });
+    bindKeyboardInput();
+    const capture = addEventListener.mock.calls.find(([name, , capture]) => name === 'keydown' && capture)?.[1];
+    keybindings.map.KeyW = 'jumpForward';
+    capture(key('KeyW'));
+    capture(key('Space'));
+    expect(viewer.jump).toHaveBeenCalledWith(1);
+    expect(submitGuess).not.toHaveBeenCalled();
+  });
+
   it('dispatches Space according to the phase and ignores held repeats', () => {
     keybindings.onKeyDown(key('Space'));
     expect(submitGuess).not.toHaveBeenCalled();

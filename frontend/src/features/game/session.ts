@@ -78,6 +78,7 @@ function updateResultActions() {
 }
 
 export async function startGame() {
+  viewer.cancelJump();
   effects.beforeStart();
   gameMode.current?.reset?.();
   cancelRoundPreload();
@@ -245,6 +246,7 @@ export async function finishRound() {
     return;
   }
   state.phase = GAME_PHASE.RESULT;
+  viewer.cancelJump();
   guessPanel.setFullscreen(false);
   guessPanel.setPinned(false);
   roundTimer.stop();
@@ -273,6 +275,7 @@ export async function finishRound() {
 export async function completeModeRound() {
   const mode = gameMode.current;
   if (!mode?.completeRound || modeRoundPending || state.phase !== GAME_PHASE.GUESSING) return;
+  viewer.cancelJump();
   modeRoundPending = true;
   gameMode.busy = true;
   gameMode.error = '';

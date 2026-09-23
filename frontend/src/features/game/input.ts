@@ -18,6 +18,13 @@ function setGuessMapSizeFromShortcut(size: GuessMapSize, event: KeyboardEvent) {
   setGuessMapSize(size);
 }
 
+function jumpFromShortcut(direction: 1 | -1, event: KeyboardEvent) {
+  if (event.defaultPrevented || !canInteractWithGuess() || gameMode.busy) return;
+  event.preventDefault();
+  event.stopPropagation();
+  if (!event.repeat) void viewer.jump(direction);
+}
+
 // What each shortcut does; names match keybindings.js.
 const KEY_ACTIONS: Record<string, (event: KeyboardEvent) => void> = {
   submitOrNext: (event) => {
@@ -38,6 +45,8 @@ const KEY_ACTIONS: Record<string, (event: KeyboardEvent) => void> = {
   zoomIn: () => { if (canInteractWithGuess()) viewer.zoomFull(1); },
   zoomOut: () => { if (canInteractWithGuess()) viewer.zoomFull(-1); },
   resetView: () => { if (canInteractWithGuess()) viewer.resetView(); },
+  jumpForward: (event) => jumpFromShortcut(1, event),
+  jumpBackward: (event) => jumpFromShortcut(-1, event),
   checkpoint: (event) => {
     if (!event.repeat && canInteractWithGuess()) viewer.toggleCheckpoint();
   },
@@ -104,6 +113,11 @@ export function bindCompassInput() {
 }
 
 export function bindKeyboardInput() {
+  // Consume jump bindings before Street View can interpret a rebound arrow/WASD key.
+  window.addEventListener('keydown', (event) => {
+    const action = keybindings.map[event.code];
+    if (action === 'jumpForward' || action === 'jumpBackward') keybindings.onKeyDown(event);
+  }, true);
   window.addEventListener('keydown', keybindings.onKeyDown);
   window.addEventListener('keyup', keybindings.onKeyUp);
   window.addEventListener('blur', () => {

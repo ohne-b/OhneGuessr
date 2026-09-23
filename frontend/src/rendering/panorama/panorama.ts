@@ -18,6 +18,7 @@ const FULLY_ZOOMED_OUT = -3; // bottom of OpenSV's panorama zoom range
 const ZOOM_IN = 3;     // google SV zoom level for "zoomed in"
 const TWEEN_MS = 160;
 const POSITION_EPSILON = 1e-5; // ~1 m; enough to bind a viewer event to its lookup
+const JUMP_METRES = 100;
 // Keys Street View uses to walk; blocked outside moving mode.
 const MOVE_KEYS = new Set(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'KeyW', 'KeyA', 'KeyS', 'KeyD']);
 
@@ -123,6 +124,7 @@ export class OpenSvViewer {
   private _checkpointBusy = false;
   private _checkpointPeek: CheckpointPeek | null = null;
   private _cancelCheckpointJump: (() => void) | null = null;
+  private _cancelDistanceJump: (() => void) | null = null;
   private _lookBehind: LookBehindView | null = null;
   private _roundToken = 0;
   private mode: MovementMode = 'moving';
@@ -181,6 +183,7 @@ export class OpenSvViewer {
   // moving / nm / nmpz. clickToGo+links gate walking; scrollwheel gates zoom; the
   // overlay gates pan (look-around) for nmpz only.
   setMode(mode: MovementMode) {
+    this.cancelJump();
     this.mode = mode === 'nm' || mode === 'nmpz' ? mode : 'moving';
     const moving = this.mode === 'moving';
     const nmpz = this.mode === 'nmpz';
@@ -210,6 +213,7 @@ export class OpenSvViewer {
   }
 
   resetView() {
+    this.cancelJump();
     this._cancelTween();
     // In moving mode, R also returns to where the round started.
     if (this._startPanoId && this.pano.getPano() !== this._startPanoId) {
@@ -217,6 +221,69 @@ export class OpenSvViewer {
     }
     this.pano.setPov({ heading: this.defaultHeading, pitch: this.defaultPitch });
     this.pano.setZoom(this._roundStartZoom);
+  }
+
+  // Approximate jump in the viewing direction, snapped to official coverage.
+  jump(direction: 1 | -1): Promise<boolean> {
+    if (this.mode !== 'moving' || !this._trailActive || this._cancelDistanceJump ||
+        this._checkpointBusy || this._lookBehind) return Promise.resolve(false);
+    const source = this._captureView();
+    if (!source) return Promise.resolve(false);
+
+    let target: SavedView | null = null;
+    const wait = this._settlePanorama(() => {
+      const expected = target ?? source;
+      if (this.pano.getPano() !== expected.panoid) { wait.cancel(); return false; }
+      if (!target) {
+        if (!samePosition(this.pano.getPosition(), source.position)) wait.cancel();
+        return false;
+      }
+      if (this.pano.getStatus() !== 'OK' ||
+          !samePosition(this.pano.getPosition(), target.position)) return false;
+      this.pano.setPov(target.pov);
+      this.pano.setZoom(target.zoom);
+      return true;
+    });
+    this._cancelDistanceJump = wait.cancel;
+    wait.start();
+
+    try {
+      const g = window.google.maps;
+      const location = g.geometry.spherical.computeOffset(
+        source.position, JUMP_METRES, source.pov.heading + (direction < 0 ? 180 : 0)
+      );
+      this.streetView.getPanorama({
+        location, radius: JUMP_METRES,
+        preference: g.StreetViewPreference.NEAREST,
+        sources: [g.StreetViewSource.GOOGLE]
+      }).then(({ data }) => {
+        if (!wait.active()) return;
+        const location = data.location;
+        const current = this._captureView();
+        if (!location?.pano || !location.latLng || location.pano === source.panoid ||
+            !current || current.panoid !== source.panoid ||
+            !samePosition(current.position, source.position)) { wait.cancel(); return; }
+        target = {
+          ...current,
+          panoid: location.pano,
+          position: { lat: location.latLng.lat(), lng: location.latLng.lng() }
+        };
+        this._cancelTween();
+        this.pano.setPano(target.panoid);
+        wait.check();
+      }).catch(wait.cancel);
+    } catch {
+      wait.cancel();
+    }
+    return wait.promise.finally(() => {
+      if (this._cancelDistanceJump === wait.cancel) this._cancelDistanceJump = null;
+    });
+  }
+
+  cancelJump() {
+    const cancel = this._cancelDistanceJump;
+    this._cancelDistanceJump = null;
+    cancel?.();
   }
 
   getHeading() { return this.pano.getPov().heading; }
@@ -311,6 +378,7 @@ export class OpenSvViewer {
   toggleCheckpoint() {
     if (this.mode !== 'moving' || !this._trailActive ||
         this._checkpointBusy || this._lookBehind) return;
+    this.cancelJump();
 
     if (!this._checkpoint) {
       this._checkpoint = this._captureView();
@@ -345,6 +413,7 @@ export class OpenSvViewer {
       return true;
     }
     if (this._checkpointBusy) return false;
+    this.cancelJump();
     const source = this._captureView();
     if (!source) return false;
 
@@ -375,6 +444,7 @@ export class OpenSvViewer {
 
   startLookBehind() {
     if (this.mode === 'nmpz' || this._checkpointBusy || this._lookBehind) return false;
+    this.cancelJump();
     const pov = this.pano.getPov?.();
     if (!pov) return false;
     this._cancelTween();
@@ -431,7 +501,7 @@ export class OpenSvViewer {
     };
     const cancel = () => finish(false);
     const check = () => {
-      if (ready()) finish(true);
+      if (!done && ready()) finish(true);
     };
     const start = () => {
       if (done || listeners.length) return;
@@ -500,6 +570,7 @@ export class OpenSvViewer {
   }
 
   _clearCheckpoint() {
+    this.cancelJump();
     this._roundToken += 1;
     const cancel = this._cancelCheckpointJump;
     this._cancelCheckpointJump = null;

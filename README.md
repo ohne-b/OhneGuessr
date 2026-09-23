@@ -136,6 +136,7 @@ API keys stay only in `plugin-data/`; they are never included in `maps.json` or 
 | <kbd>E</kbd> / <kbd>Q</kbd> | Zoom in / out |
 | <kbd>N</kbd> | Face north; press again to look down |
 | <kbd>R</kbd> | Reset the view; in Moving, return to the start |
+| <kbd>↑</kbd> / <kbd>↓</kbd> | Jump roughly 100 m forward / backward (Moving only) |
 | <kbd>C</kbd> | Set or return to a checkpoint |
 | Hold <kbd>V</kbd> | Peek at the checkpoint |
 | Hold <kbd>B</kbd> | Look behind |

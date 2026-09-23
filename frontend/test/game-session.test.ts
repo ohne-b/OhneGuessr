@@ -16,7 +16,7 @@ vi.mock('@/features/map-library/api.js', () => ({ loadLibrary: vi.fn(), sampleMa
 vi.mock('@/features/game/runtime.js', () => ({
   viewer: {
     setMode: vi.fn(), setStartZoomedOut: vi.fn(), showLocation: vi.fn(),
-    beginRound: vi.fn(), getTrail: vi.fn(() => [])
+    beginRound: vi.fn(), cancelJump: vi.fn(), getTrail: vi.fn(() => [])
   },
   gmap: { guess: null, reset: vi.fn(), resize: vi.fn() },
   resultMap: { show: vi.fn(), showMany: vi.fn() },
@@ -72,8 +72,10 @@ describe('game session', () => {
     expect(vi.mocked(effects.selectMap).mock.calls[0][0]).not.toBe(map);
     expect(effects.startRound).toHaveBeenCalledWith(map, locations[0]);
     gmap.guess = { lat: 1, lng: 2 };
+    vi.mocked(viewer.cancelJump).mockClear();
     await finishRound();
     await finishRound(); // A repeated submission cannot append another result.
+    expect(viewer.cancelJump).toHaveBeenCalledOnce();
     expect(state.results).toHaveLength(1);
     expect(state.total).toBe(5000);
     expect(resultMap.show).toHaveBeenCalledWith(state.results[0], []);
@@ -105,7 +107,9 @@ describe('game session', () => {
     loaded(true);
     await starting;
     expect(ui.timerRemaining).toBe(1);
+    vi.mocked(viewer.cancelJump).mockClear();
     await vi.advanceTimersByTimeAsync(1000);
+    expect(viewer.cancelJump).toHaveBeenCalledOnce();
     expect(state.phase).toBe('result');
     expect(state.results[0]).toMatchObject({ guess: null, points: 0 });
   });
@@ -123,8 +127,10 @@ describe('game session', () => {
     expect(state.phase).toBe('empty');
     expect(viewer.showLocation).not.toHaveBeenCalled();
     await startModeGame();
+    vi.mocked(viewer.cancelJump).mockClear();
     const first = completeModeRound();
     const repeated = completeModeRound();
+    expect(viewer.cancelJump).toHaveBeenCalledOnce();
     expect(mode.completeRound).toHaveBeenCalledTimes(1);
     const results = [{ actual: locations[0], guess: { lat: 1, lng: 2 } }];
     reveal(results);
