@@ -1,8 +1,9 @@
 * text=auto
 *.bat text eol=crlf
-*.sh text eol=lf
+*.sh text eol=lf -linguist-detectable
 frontend/** text=auto eol=lf
 frontend/dist/** linguist-generated=true whitespace=-blank-at-eol
 frontend/public/vendor/** linguist-vendored=true
 frontend/index.html -linguist-detectable
 build/windows/nsis/project.nsi -linguist-detectable
+build/release/sign.ps1 -linguist-detectable
