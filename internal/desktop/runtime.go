@@ -4,6 +4,7 @@ import (
 	"io/fs"
 	"net/http"
 	"path/filepath"
+	"runtime"
 	"strings"
 
 	"github.com/ohne-b/OhneGuessr/internal/backend"
@@ -93,6 +94,11 @@ func Run(frontendAssets fs.FS, version string, arguments []string) error {
 	handler.Handle("/data/", backendHandler)
 	handler.Handle("/", application.AssetFileServerFS(frontend))
 
+	singleInstanceID := "5ac23bb7-9f87-48bc-a73f-e4fe65ce85c1"
+	if runtime.GOOS == "linux" {
+		// Wails beta.23 expects a D-Bus name; preserve the previous Linux lock identity.
+		singleInstanceID = "org.wails_app_" + strings.ReplaceAll(singleInstanceID, "-", "_")
+	}
 	wailsApp := application.New(application.Options{
 		Name:        "OhneGuessr",
 		Description: "A free, lean, local GeoGuessr alternative.",
@@ -101,7 +107,7 @@ func Run(frontendAssets fs.FS, version string, arguments []string) error {
 		},
 		OnShutdown: desktop.shutdown,
 		SingleInstance: &application.SingleInstanceOptions{
-			UniqueID:               "5ac23bb7-9f87-48bc-a73f-e4fe65ce85c1",
+			UniqueID:               singleInstanceID,
 			OnSecondInstanceLaunch: desktop.secondInstance,
 		},
 		FileAssociations: []string{".ohne"},

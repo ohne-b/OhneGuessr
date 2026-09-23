@@ -3,6 +3,7 @@
 ## [v0.2.3](https://github.com/ohne-b/OhneGuessr/releases/tag/v0.2.3) — 2026-09-23
 
 - match GeoGuessr's map pan momentum with speed-dependent glide timing and smoother braking
+- fix Linux startup with the updated Wails single-instance handling
 - update Wails and its frontend runtime to v3.0.0-beta.23, MapLibre GL JS to v6.10.0, and refresh frontend dependencies
 - exclude release scripts from GitHub's language statistics
 
