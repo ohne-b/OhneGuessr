@@ -47,7 +47,10 @@ go tool wails3 dev
 The development app uses the normal application data directory, including
 `%LOCALAPPDATA%\OhneGuessr` on Windows. For manual checks with disposable data,
 launch a built executable with `--data-dir` pointing to a separate test directory.
-This does not make network features offline or bypass the single-instance app lock.
+This also redirects WebView storage on Windows. On macOS/Linux, use a disposable
+OS profile for UI checks: `--data-dir` alone does not isolate WebView settings.
+Neither approach makes network features offline or bypasses the app's
+single-instance behavior.
 
 ```powershell
 go tool wails3 build
@@ -86,8 +89,8 @@ Resolve conflicts deliberately and rerun affected checks after integration. Use
 focused conventional commits and conventional PR titles, such as
 `fix(settings): preserve unsaved changes`. Give substantial independent changes
 meaningful commit boundaries; do not artificially split small changes. Keep branch
-names, commit messages, PRs and documentation free of assistant branding and phrases
-such as "as requested".
+names, commit messages, PRs and documentation free of assistant branding and
+conversational acknowledgments.
 
 Submit through a PR against canonical `main`, never directly to it. Keep incomplete
 PRs in draft, including those awaiting applicable checks or independent review.
