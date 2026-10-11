@@ -5,6 +5,10 @@ OhneGuessr clients download `registry.json`, each plugin's `manifest.json`, and
 its compiled `index.js` directly from this GitHub path, so the directory layout
 is a compatibility boundary.
 
+Plugins are trusted ES modules that default-export `activate(api)`. The API in
+`types/ohneguessr.d.ts` supplies shared in-game window and HUD button styles plus
+private game capabilities; plugins also have normal browser API and DOM access.
+
 Edit `*/src/index.ts` and `*/manifest.json`, then run:
 
 ```sh

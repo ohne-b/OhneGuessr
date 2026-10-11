@@ -71,7 +71,7 @@ Every location needs finite `lat` and `lng` values. Panorama ID, heading, pitch,
 
 The **Plugins** launcher tab manages the built-in Country Streak, Challenges, Map Making App Sync, and Learnable Meta plugins. Its **Additional** tab installs and updates curated plugins from this repository's GitHub-hosted marketplace. Sync configuration stays beside Maps and is shown only while its plugin is enabled.
 
-Additional plugins are authored in `plugins/<id>/src/index.ts` and built into trusted ES modules that default-export an `activate(api)` function. The API in `plugins/types/ohneguessr.d.ts` supplies the shared in-game window and HUD button styles plus private game capabilities; plugins otherwise have normal access to the renderer's browser APIs and DOM.
+Additional plugins are trusted code with access to the game's browser APIs and DOM. For authoring details, see the [plugin guide](plugins/README.md).
 
 ## Country Streak
 
@@ -153,74 +153,9 @@ API keys stay only in `plugin-data/`; they are never included in `maps.json` or 
 
 Gameplay bindings are rebindable under **Controls** in the launcher.
 
-## Development
+## Contributing
 
-Backend: Go 1.26 and Wails v3.0.0-beta.16. Frontend: Svelte 5, Vite, and TypeScript.
-
-Install Go 1.26 and Node.js 20.19+, 22.12+, or 24+. The Wails CLI is tracked in `go.mod`, so no global installation is needed.
-
-Start the development app with:
-
-```powershell
-go tool wails3 dev
-```
-
-Run `npm --prefix plugins run build` after changing a plugin's TypeScript source or manifest.
-
-Development uses `%LOCALAPPDATA%\OhneGuessr` on Windows.
-
-Build the portable EXE with:
-
-```powershell
-go tool wails3 build
-```
-
-For the Setup EXE, install [NSIS](https://nsis.sourceforge.io/) and run:
-
-```powershell
-go tool wails3 task windows:package VERSION=0.0.0
-```
-
-Builds go to `bin/`. To build only the frontend, run:
-
-```powershell
-npm --prefix frontend run build
-```
-
-This creates the ignored `frontend/dist/` directory. The **Check** workflow runs source checks on pushes and pull requests; its temporary Windows package is manual. The **Release** workflow builds Windows, Linux, and macOS files and uploads them to a draft release.
-
-See [Architecture and test ownership](docs/architecture.md) for the source map, dependency rules, state and styling contracts, and release script inputs.
-
-Frontend tests stay flat in `frontend/test/`, grouped by filename prefix, and import source through `@/` (for example, `@/features/game/deck.js`). Downloadable plugins keep their tests in `plugins/<id>/`; Go tests stay beside their packages. Run frontend and downloadable-plugin tests with `npm --prefix frontend test`, plugin build checks with `npm --prefix plugins run check`, and backend checks with `go vet ./...` and `go test ./...`.
-
-### Repository structure
-
-```text
-OhneGuessr/
-|-- .github/workflows/     GitHub Actions
-|-- build/                 Wails tasks and platform release scripts
-|-- docs/                  architecture and test ownership
-|-- frontend/
-|   |-- src/               Svelte and TypeScript source
-|   |-- test/              frontend tests, grouped by filename prefix
-|   |-- bindings/          generated, committed Wails bindings
-|   |-- public/            static assets, country flags, and vendored OpenSV
-|   |-- dist/              generated frontend (ignored)
-|   `-- package.json       frontend dependencies and scripts
-|-- internal/
-|   |-- backend/           map storage and local HTTP backend
-|   |-- challenges/        challenge files and desktop service
-|   |-- desktop/           Wails runtime and window service
-|   |-- learnable-meta/    Learnable Meta synchronization
-|   |-- local-party/       party service and server
-|   |-- map-making-app/    Map Making App synchronization
-|   |-- pluginmanager/     additional-plugin installation and state
-|   `-- updates/           cross-platform update service
-|-- plugins/               published additional-plugin catalog and sources
-|-- main.go                embedded frontend and executable entry point
-|-- go.mod / go.sum        Go dependencies
-`-- Taskfile.yml           Wails build tasks
-```
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, tests, builds and the PR workflow.
 
 ## Troubleshooting
 

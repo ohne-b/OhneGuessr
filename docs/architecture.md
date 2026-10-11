@@ -156,10 +156,7 @@ Released clients fetch `/plugins/registry.json`, `/plugins/<id>/manifest.json`,
 and `/plugins/<id>/index.js`. Keep these paths, IDs, API version, and checksum
 format compatible. See [the plugin guide](../plugins/README.md).
 
-## Tests and development
-
-Run commands from the repository root. Install frontend dependencies with
-`npm --prefix frontend ci`; start the desktop app with `go tool wails3 dev`.
+## Test ownership
 
 | Code under test | Test location |
 | --- | --- |
@@ -172,29 +169,6 @@ Frontend tests import source through `@/`, for example
 downloadable-plugin tests. Keep Go tests colocated so they can exercise package
 internals without exporting implementation details for a centralized test folder.
 Reuse `internal/plugintest` where its existing helpers fit.
-
-```sh
-npm --prefix frontend test
-npm --prefix frontend run build
-npm --prefix plugins run check
-go tool wails3 generate bindings -ts -i -noevents ./...
-git diff --exit-code -- frontend/bindings
-go vet ./...
-go test ./...
-```
-
-The frontend build includes Svelte/TypeScript checking. Wails build tasks also
-generate bindings before building the frontend. Do not hand-edit bindings;
-commit regenerated files when a deliberate service/API change requires them.
-Build `frontend/dist/` before invoking Go directly because `main.go` embeds it.
-After editing downloadable-plugin source or manifests, run
-`npm --prefix plugins run build` and commit the generated entry points and registry.
-
-CI additionally checks Go formatting and runs `go test -race ./...`, which
-requires CGO and a C compiler. Linux desktop checks require GTK 4 and WebKitGTK 6
-development packages. Use the platform runners for native packaging and update
-checks; a frontend test run does not exercise those paths. For map sampling
-measurements, use `go test ./internal/backend -run '^$' -bench BenchmarkSampleMapLocations -benchmem`.
 
 ## Release scripts
 
