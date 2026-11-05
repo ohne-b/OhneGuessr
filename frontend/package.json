@@ -14,7 +14,7 @@
     "build": "npm run check && vite build"
   },
   "dependencies": {
-    "@wailsio/runtime": "3.0.0-beta.27",
+    "@wailsio/runtime": "3.0.0-beta.28",
     "maplibre-gl": "6.11.2",
     "svelte": "5.57.1"
   },
